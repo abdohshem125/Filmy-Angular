@@ -7,8 +7,11 @@ export class MoviesService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:5050/api/movies';
 
-  getAll(): Observable<any> {
+  getAllMovies(): Observable<any> {
     return this.http.get(`${this.apiUrl}`);
+  }
+  getMovieById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
   }
 
   addToWatchlist(movieId: string): Observable<any> {

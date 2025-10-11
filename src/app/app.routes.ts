@@ -9,12 +9,12 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { authGuard } from './services/auth.guard';
 
-
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'movies', component: Movies },
-  { path: 'movieDetails', component: MovieDetails },
+  { path: 'movies/:genre', component: Movies },
+  { path: 'movieDetails/:id', component: MovieDetails },
   { path: 'profile', component: Profile },
   { path: 'contactUs', component: ContactUs },
   { path: 'aboutUs', component: AboutUs },
