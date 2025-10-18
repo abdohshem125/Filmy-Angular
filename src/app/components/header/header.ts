@@ -14,8 +14,12 @@ export class Header {
   searchTerm: string = '';
   menuOpen = false;
   dropdownOpen = false;
+    isDark = true;
 
-  constructor(private router: Router) {}
+
+  constructor(private router: Router) {
+
+  }
 
   goToGenre(genre: string) {
     this.router.navigate(['/movies', genre]);
