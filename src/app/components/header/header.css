@@ -1,5 +1,5 @@
 .navbar {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
   border-bottom: 1px solid rgba(255, 76, 76, 0.2);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   position: sticky;
@@ -16,10 +16,6 @@
   align-items: center;
   justify-content: space-between;
   height: 70px;
-}
-
-.logo {
-  flex-shrink: 0;
 }
 
 .logo-link {
@@ -39,20 +35,16 @@
   transform: translateY(-2px);
 }
 
-.logo-icon {
-  font-size: 1.8rem;
+.logo-icon,
+.logo-text {
   background: linear-gradient(135deg, #ff4c4c, #ff6b6b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.logo-text {
-  background: linear-gradient(135deg, #ff4c4c, #ff6b6b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 0.5px;
+.logo-icon {
+  font-size: 1.8rem;
 }
 
 .nav-links {
@@ -64,10 +56,6 @@
   padding: 0;
   flex: 1;
   justify-content: center;
-}
-
-.nav-item {
-  position: relative;
 }
 
 .nav-link {
@@ -150,15 +138,8 @@
   transform: translateX(5px);
 }
 
-.dropdown-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 76, 76, 0.3), transparent);
-  margin: 0.5rem 0;
-}
-
 /* Search */
 .search-container {
-  /* flex: 0 1 350px; */
   margin-left: 9rem;
 }
 
@@ -193,10 +174,6 @@
   background: rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 0 3px rgba(255, 76, 76, 0.1);
   transform: translateY(-2px);
-}
-
-.search-input::placeholder {
-  color: #888;
 }
 
 /* Hamburger */
@@ -251,14 +228,9 @@
   visibility: visible;
 }
 
-a {
-  cursor: pointer;
-}
-
-/* ------------------ Responsive ------------------ */
+/* Responsive */
 @media (max-width: 1024px) {
   .search-container {
-    flex: 0 1 250px;
     margin-left: 1rem;
   }
 }
@@ -273,7 +245,6 @@ a {
     height: 100vh;
     flex-direction: column;
     padding: 2rem 1rem;
-    gap: 0;
     transition: left 0.3s ease;
     z-index: 1000;
     border-right: 1px solid rgba(255, 76, 76, 0.2);
@@ -296,10 +267,6 @@ a {
     margin: 0.5rem 0 1rem 0;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: none;
-  }
-
-  .search-container {
-    display: block;
   }
 
   .hamburger {
