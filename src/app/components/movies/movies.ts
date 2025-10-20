@@ -81,8 +81,9 @@ export class Movies implements OnInit {
     });
   }
 
-  addToWatchlist(movieId: string) {
-  this.moviesService.addToWatchlist(movieId).subscribe({
+ addToWatchlist(movieId: string) {
+  const userId = localStorage.getItem('userId'); // or get from auth service
+  this.moviesService.addToWatchlist(userId!, movieId).subscribe({
     next: (res) => {
       console.log("Added to watchlist", res);
       alert("✅ Added to watchlist!");
@@ -90,10 +91,9 @@ export class Movies implements OnInit {
     error: (err) => {
       console.error("Error adding to watchlist:", err);
       alert("❌ Failed to add to watchlist");
-    }
+    },
   });
 }
-
 
   goToMovie(id: string) {
     this.router.navigate(['/movieDetails', id]);
