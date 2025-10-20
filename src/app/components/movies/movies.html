@@ -46,6 +46,10 @@
       <button class="details-btn" (click)="goToMovie(movie._id); $event.stopPropagation()">
         🎬 View Details
       </button>
+          <button class="watchlist-btn" (click)="addToWatchlist(movie._id); $event.stopPropagation()">
+      ➕ Add to Watchlist
+    </button>
+  </div>
     </div>
   }
 </div>

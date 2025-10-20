@@ -14,7 +14,7 @@ export class MoviesService {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
-  addToWatchlist(movieId: string): Observable<any> {
-    return this.http.post(`  private apiUrl = 'https://filmy-dusky.vercel.app/api/watchlist`, { movieId });
+ addToWatchlist(movieId: string): Observable<any> {
+    return this.http.post(`https://filmy-dusky.vercel.app/api/watchlist`, { movieId });
   }
 }

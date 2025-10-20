@@ -192,6 +192,23 @@
   animation: loading 1.5s infinite;
 }
 
+.watchlist-btn {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #ff9800;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.watchlist-btn:hover {
+  background: #e68900;
+}
+
 @keyframes loading {
   0% {
     background-position: 200% 0;
