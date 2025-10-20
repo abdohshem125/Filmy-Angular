@@ -20,7 +20,11 @@ addToWatchlist(userId: string, movieId: string) {
   return this.http.post(
     `https://filmy-dusky.vercel.app/api/users/${userId}/watchlist/${movieId}`,
     {},
-    { headers: { Authorization: `Bearer ${token}` } }
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,  // ✅ Important!
+      }
+    }
   );
 }
 
