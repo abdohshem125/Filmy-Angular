@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class MoviesService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:5050/api/movies';
+  private apiUrl = 'https://filmy-dusky.vercel.app/api/movies';
 
   getAllMovies(): Observable<any> {
     return this.http.get(`${this.apiUrl}`);
@@ -15,6 +15,6 @@ export class MoviesService {
   }
 
   addToWatchlist(movieId: string): Observable<any> {
-    return this.http.post(`http://localhost:5050/api/watchlist`, { movieId });
+    return this.http.post(`  private apiUrl = 'https://filmy-dusky.vercel.app/api/watchlist`, { movieId });
   }
 }
