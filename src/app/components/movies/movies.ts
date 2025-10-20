@@ -81,6 +81,20 @@ export class Movies implements OnInit {
     });
   }
 
+  addToWatchlist(movieId: string) {
+  this.moviesService.addToWatchlist(movieId).subscribe({
+    next: (res) => {
+      console.log("Added to watchlist", res);
+      alert("✅ Added to watchlist!");
+    },
+    error: (err) => {
+      console.error("Error adding to watchlist:", err);
+      alert("❌ Failed to add to watchlist");
+    }
+  });
+}
+
+
   goToMovie(id: string) {
     this.router.navigate(['/movieDetails', id]);
   }
