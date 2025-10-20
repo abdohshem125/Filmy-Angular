@@ -14,16 +14,14 @@ export class MoviesService {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
-addToWatchlist(userId: string, movieId: string): Observable<any> {
-  const token = localStorage.getItem('token'); // or wherever you store it
+addToWatchlist(userId: string, movieId: string) {
+  const token = localStorage.getItem('token');
+
   return this.http.post(
     `https://filmy-dusky.vercel.app/api/users/${userId}/watchlist/${movieId}`,
-    {}, // empty body, since backend uses params
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
+    {},
+    { headers: { Authorization: `Bearer ${token}` } }
   );
 }
+
 }
