@@ -22,7 +22,7 @@ export class Movies implements OnInit {
   constructor(
     private moviesService: MoviesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
     private userService: UserService
 
   ) {}
