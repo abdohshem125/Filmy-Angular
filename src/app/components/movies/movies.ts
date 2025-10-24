@@ -103,41 +103,46 @@ export class Movies implements OnInit {
   }
 
   toggleFavorite(movie: Movie, event: MouseEvent) {
-    event.stopPropagation();
+  event.stopPropagation();
 
-    const user = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
-    if (!user || !token) {
-      alert('Login required');
-      return;
-    }
-
-    const userId = JSON.parse(user)._id;
-
-    this.moviesService.addToFavorite(userId, movie._id).subscribe({
-      next: () => {
-        const favData = localStorage.getItem('favorites');
-        let favorites: Movie[] = favData ? JSON.parse(favData) : [];
-
-        const exists = favorites.find((f: Movie) => f._id === movie._id);
-
-        if (exists) {
-          favorites = favorites.filter(f => f._id !== movie._id);
-          movie.isFav = false;
-        } else {
-          favorites.push(movie);
-          movie.isFav = true;
-        }
-
-        this.userService.updateFavorites(favorites); // update Profile
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Failed to update favorite');
-      }
-    });
+  const user = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
+  if (!user || !token) {
+    alert('Login required');
+    return;
   }
+
+  const userId = JSON.parse(user)._id;
+
+  this.moviesService.addToFavorite(userId, movie._id).subscribe({
+    next: () => {
+      const favData = localStorage.getItem('favorites');
+      let favorites: Movie[] = favData ? JSON.parse(favData) : [];
+
+      const exists = favorites.find((f: Movie) => f._id === movie._id);
+
+      if (exists) {
+        // Remove from favorites
+        favorites = favorites.filter(f => f._id !== movie._id);
+        movie.isFav = false;
+        alert(`Removed "${movie.title}" from favorites`);
+      } else {
+        // Add to favorites
+        favorites.push(movie);
+        movie.isFav = true;
+        alert(`Added "${movie.title}" to favorites`);
+      }
+
+      this.userService.updateFavorites(favorites); // update Profile
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    },
+    error: (err) => {
+      console.error(err);
+      alert('Failed to update favorite');
+    }
+  });
+}
+
 
   goToMovie(id: string) {
     this.router.navigate(['/movieDetails', id]);
