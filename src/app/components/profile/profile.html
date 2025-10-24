@@ -29,12 +29,11 @@
 
   <div class="section">
     <h3>⭐ Favorite Movies</h3>
-<div class="favorite-movies">
-  <div *ngFor="let movie of movies" class="movie-card" (click)="goToMovie(movie._id)">
-    <h3>{{ movie.title }}</h3>
-    <!-- Remove image, rating, releaseYear, duration -->
-  </div>
-</div>
+    <div *ngIf="movies.length > 0; else noFavorites" class="favorite-movies">
+      <div *ngFor="let movie of movies" class="movie-card" (click)="goToMovie(movie._id)">
+        <h3>{{ movie.title }}</h3>
+      </div>
+    </div>
     <ng-template #noFavorites>
       <p class="empty">No favorite movies yet.</p>
     </ng-template>

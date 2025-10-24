@@ -113,22 +113,23 @@
   color: #fff;
 }
 
+/* Favorite Movies CSS */
 .favorite-movies {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px; /* space between cards */
+  gap: 12px;
   margin-top: 20px;
 }
 
 .favorite-movies .movie-card {
-  background-color: #1e1e1e; /* dark card */
-  color: #fff; /* title text */
+  background-color: #1e1e1e;
+  color: #fff;
   padding: 12px 16px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: transform 0.2s, background-color 0.2s;
-  min-width: 120px; /* card width */
+  min-width: 120px;
   text-align: center;
 }
 
@@ -142,5 +143,5 @@
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; /* if title is too long */
+  white-space: nowrap;
 }
