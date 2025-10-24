@@ -4,12 +4,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MoviesService } from '../../services/movies.service';
 import { UserService } from '../../services/user.service';
 
-interface Movie {
+export interface Movie {
   _id: string;
   title: string;
   genre?: string | string[];
   isFav?: boolean;
-  // add other fields as needed
+
+  // Template properties
+  image?: string;
+  rating?: number;
+  releaseYear?: number;
+  duration?: number;
 }
 
 @Component({
@@ -17,7 +22,7 @@ interface Movie {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './movies.html',
-  styleUrls: ['./movies.css'], // fixed plural
+  styleUrls: ['./movies.css'],
 })
 export class Movies implements OnInit {
   movies: Movie[] = [];
@@ -59,7 +64,19 @@ export class Movies implements OnInit {
   loadMovies(): void {
     this.moviesService.getAllMovies().subscribe({
       next: (res: any) => {
-        this.allMovies = res.movies ?? (Array.isArray(res) ? res : []);
+        const apiMovies = res.movies ?? (Array.isArray(res) ? res : []);
+
+        // Map API fields to Movie interface
+        this.allMovies = apiMovies.map((m: any) => ({
+          _id: m._id || m.id,
+          title: m.title,
+          genre: m.genre,
+          image: m.image || (m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : ''),
+          rating: m.rating ?? m.vote_average,
+          releaseYear: m.releaseYear ?? (m.release_date ? new Date(m.release_date).getFullYear() : undefined),
+          duration: m.duration ?? m.runtime,
+          isFav: false,
+        }));
 
         let filtered = this.allMovies;
 
