@@ -30,6 +30,10 @@ export class Movies implements OnInit {
   genre: string | null = null;
   searchTerm: string | null = null;
 
+  // Toast notification
+  toastMessage: string = '';
+  toastVisible: boolean = false;
+
   constructor(
     private moviesService: MoviesService,
     private router: Router,
@@ -61,104 +65,110 @@ export class Movies implements OnInit {
     }
   }
 
-loadMovies(): void {
-  this.moviesService.getAllMovies().subscribe({
-    next: (res: any) => {
-      const apiMovies = res.movies ?? (Array.isArray(res) ? res : []);
+  loadMovies(): void {
+    this.moviesService.getAllMovies().subscribe({
+      next: (res: any) => {
+        const apiMovies = res.movies ?? (Array.isArray(res) ? res : []);
 
-      // Get favorites from localStorage
-      const favData = localStorage.getItem('favorites');
-      const favorites: Movie[] = favData ? JSON.parse(favData) : [];
+        // Get favorites from localStorage
+        const favData = localStorage.getItem('favorites');
+        const favorites: Movie[] = favData ? JSON.parse(favData) : [];
 
-      // Map API fields to Movie interface and mark as favorite if in localStorage
-      this.allMovies = apiMovies.map((m: any) => {
-        const movie: Movie = {
-          _id: m._id || m.id,
-          title: m.title,
-          genre: m.genre,
-          image: m.image || (m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : ''),
-          rating: m.rating ?? m.vote_average,
-          releaseYear: m.releaseYear ?? (m.release_date ? new Date(m.release_date).getFullYear() : undefined),
-          duration: m.duration ?? m.runtime,
-          isFav: false,
-        };
+        // Map API fields to Movie interface and mark as favorite if in localStorage
+        this.allMovies = apiMovies.map((m: any) => {
+          const movie: Movie = {
+            _id: m._id || m.id,
+            title: m.title,
+            genre: m.genre,
+            image: m.image || (m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : ''),
+            rating: m.rating ?? m.vote_average,
+            releaseYear: m.releaseYear ?? (m.release_date ? new Date(m.release_date).getFullYear() : undefined),
+            duration: m.duration ?? m.runtime,
+            isFav: false,
+          };
 
-        // Persist favorite
-        if (favorites.find(f => f._id === movie._id)) {
-          movie.isFav = true;
+          // Persist favorite
+          if (favorites.find(f => f._id === movie._id)) {
+            movie.isFav = true;
+          }
+
+          return movie;
+        });
+
+        let filtered = this.allMovies;
+
+        if (this.genre) {
+          const gLower = this.genre.toLowerCase();
+          filtered = filtered.filter((m) => {
+            if (!m.genre) return false;
+            if (Array.isArray(m.genre)) {
+              return m.genre.some((gg: string) => gg.toLowerCase() === gLower);
+            }
+            return m.genre.toString().toLowerCase() === gLower;
+          });
         }
 
-        return movie;
-      });
+        if (this.searchTerm) {
+          const sLower = this.searchTerm.toLowerCase();
+          filtered = filtered.filter((m) => m.title?.toLowerCase().includes(sLower));
+        }
 
-      let filtered = this.allMovies;
-
-      if (this.genre) {
-        const gLower = this.genre.toLowerCase();
-        filtered = filtered.filter((m) => {
-          if (!m.genre) return false;
-          if (Array.isArray(m.genre)) {
-            return m.genre.some((gg: string) => gg.toLowerCase() === gLower);
-          }
-          return m.genre.toString().toLowerCase() === gLower;
-        });
-      }
-
-      if (this.searchTerm) {
-        const sLower = this.searchTerm.toLowerCase();
-        filtered = filtered.filter((m) => m.title?.toLowerCase().includes(sLower));
-      }
-
-      this.movies = filtered;
-    },
-    error: (err) => console.error('Error fetching movies:', err),
-  });
-}
-
-
-  toggleFavorite(movie: Movie, event: MouseEvent) {
-  event.stopPropagation();
-
-  const user = localStorage.getItem('user');
-  const token = localStorage.getItem('token');
-  if (!user || !token) {
-    alert('Login required');
-    return;
+        this.movies = filtered;
+      },
+      error: (err) => console.error('Error fetching movies:', err),
+    });
   }
 
-  const userId = JSON.parse(user)._id;
+  toggleFavorite(movie: Movie, event: MouseEvent) {
+    event.stopPropagation();
 
-  this.moviesService.addToFavorite(userId, movie._id).subscribe({
-    next: () => {
-      const favData = localStorage.getItem('favorites');
-      let favorites: Movie[] = favData ? JSON.parse(favData) : [];
-
-      const exists = favorites.find((f: Movie) => f._id === movie._id);
-
-      if (exists) {
-        // Remove from favorites
-        favorites = favorites.filter(f => f._id !== movie._id);
-        movie.isFav = false;
-        alert(`Removed "${movie.title}" from favorites`);
-      } else {
-        // Add to favorites
-        favorites.push(movie);
-        movie.isFav = true;
-        alert(`Added "${movie.title}" to favorites`);
-      }
-
-      this.userService.updateFavorites(favorites); // update Profile
-      localStorage.setItem('favorites', JSON.stringify(favorites));
-    },
-    error: (err) => {
-      console.error(err);
-      alert('Failed to update favorite');
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    if (!user || !token) {
+      this.showToast('Login required');
+      return;
     }
-  });
-}
 
+    const userId = JSON.parse(user)._id;
+
+    this.moviesService.addToFavorite(userId, movie._id).subscribe({
+      next: () => {
+        const favData = localStorage.getItem('favorites');
+        let favorites: Movie[] = favData ? JSON.parse(favData) : [];
+
+        const exists = favorites.find((f: Movie) => f._id === movie._id);
+
+        if (exists) {
+          // Remove from favorites
+          favorites = favorites.filter(f => f._id !== movie._id);
+          movie.isFav = false;
+          this.showToast(`Removed "${movie.title}" from favorites`);
+        } else {
+          // Add to favorites
+          favorites.push(movie);
+          movie.isFav = true;
+          this.showToast(`Added "${movie.title}" to favorites`);
+        }
+
+        this.userService.updateFavorites(favorites); // update Profile
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+      },
+      error: (err) => {
+        console.error(err);
+        this.showToast('Failed to update favorite');
+      }
+    });
+  }
 
   goToMovie(id: string) {
     this.router.navigate(['/movieDetails', id]);
+  }
+
+  showToast(message: string, duration: number = 2000) {
+    this.toastMessage = message;
+    this.toastVisible = true;
+    setTimeout(() => {
+      this.toastVisible = false;
+    }, duration);
   }
 }
