@@ -50,7 +50,7 @@
                       [class.active]="movie.isWatchlist"
                       (click)="toggleWatchlist()">
                 <i>{{ movie.isWatchlist ? '✅' : '🎬' }}</i>
-                {{ movie.isWatchlist ? 'In Watchlist' : 'Add to Watchlist' }}
+                {{ movie.isWatchlist ? 'Remove From Watchlist' : 'Add to Watchlist' }}
               </button>
               <button class="watch-btn secondary"><i>▶️</i> Watch Trailer</button>
             </div>
