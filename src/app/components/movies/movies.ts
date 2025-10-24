@@ -61,13 +61,18 @@ export class Movies implements OnInit {
     }
   }
 
-  loadMovies(): void {
-    this.moviesService.getAllMovies().subscribe({
-      next: (res: any) => {
-        const apiMovies = res.movies ?? (Array.isArray(res) ? res : []);
+loadMovies(): void {
+  this.moviesService.getAllMovies().subscribe({
+    next: (res: any) => {
+      const apiMovies = res.movies ?? (Array.isArray(res) ? res : []);
 
-        // Map API fields to Movie interface
-        this.allMovies = apiMovies.map((m: any) => ({
+      // Get favorites from localStorage
+      const favData = localStorage.getItem('favorites');
+      const favorites: Movie[] = favData ? JSON.parse(favData) : [];
+
+      // Map API fields to Movie interface and mark as favorite if in localStorage
+      this.allMovies = apiMovies.map((m: any) => {
+        const movie: Movie = {
           _id: m._id || m.id,
           title: m.title,
           genre: m.genre,
@@ -76,31 +81,40 @@ export class Movies implements OnInit {
           releaseYear: m.releaseYear ?? (m.release_date ? new Date(m.release_date).getFullYear() : undefined),
           duration: m.duration ?? m.runtime,
           isFav: false,
-        }));
+        };
 
-        let filtered = this.allMovies;
-
-        if (this.genre) {
-          const gLower = this.genre.toLowerCase();
-          filtered = filtered.filter((m) => {
-            if (!m.genre) return false;
-            if (Array.isArray(m.genre)) {
-              return m.genre.some((gg: string) => gg.toLowerCase() === gLower);
-            }
-            return m.genre.toString().toLowerCase() === gLower;
-          });
+        // Persist favorite
+        if (favorites.find(f => f._id === movie._id)) {
+          movie.isFav = true;
         }
 
-        if (this.searchTerm) {
-          const sLower = this.searchTerm.toLowerCase();
-          filtered = filtered.filter((m) => m.title?.toLowerCase().includes(sLower));
-        }
+        return movie;
+      });
 
-        this.movies = filtered;
-      },
-      error: (err) => console.error('Error fetching movies:', err),
-    });
-  }
+      let filtered = this.allMovies;
+
+      if (this.genre) {
+        const gLower = this.genre.toLowerCase();
+        filtered = filtered.filter((m) => {
+          if (!m.genre) return false;
+          if (Array.isArray(m.genre)) {
+            return m.genre.some((gg: string) => gg.toLowerCase() === gLower);
+          }
+          return m.genre.toString().toLowerCase() === gLower;
+        });
+      }
+
+      if (this.searchTerm) {
+        const sLower = this.searchTerm.toLowerCase();
+        filtered = filtered.filter((m) => m.title?.toLowerCase().includes(sLower));
+      }
+
+      this.movies = filtered;
+    },
+    error: (err) => console.error('Error fetching movies:', err),
+  });
+}
+
 
   toggleFavorite(movie: Movie, event: MouseEvent) {
   event.stopPropagation();
