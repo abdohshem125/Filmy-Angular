@@ -112,36 +112,3 @@
   background: #0d0d16;
   color: #fff;
 }
-
-/* Favorite Movies CSS */
-.favorite-movies {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.favorite-movies .movie-card {
-  background-color: #1e1e1e;
-  color: #fff;
-  padding: 12px 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
-  min-width: 120px;
-  text-align: center;
-}
-
-.favorite-movies .movie-card:hover {
-  transform: translateY(-3px);
-  background-color: #2c2c2c;
-}
-
-.favorite-movies .movie-card h3 {
-  font-size: 1rem;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
