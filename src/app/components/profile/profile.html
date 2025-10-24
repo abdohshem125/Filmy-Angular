@@ -1,9 +1,7 @@
 <div *ngIf="user" class="profile-page">
   <div class="profile-header">
     <div class="user-info">
-      <div class="avatar">
-        {{ user.name.charAt(0).toUpperCase() }}
-      </div>
+      <div class="avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
       <div class="details">
         <h2>{{ user.name }}</h2>
         <p>{{ user.email }}</p>
