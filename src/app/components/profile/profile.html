@@ -1,4 +1,4 @@
-<div class="profile-page" ngIf="user">
+<div *ngIf="user" class="profile-page">
   <div class="profile-header">
     <div class="user-info">
       <div class="avatar">
@@ -13,8 +13,8 @@
 
   <div class="section">
     <h3>🎥 Watchlist</h3>
-    <div class="movies-grid"ngIf="watchlist.length > 0; else noWatchlist">
-      <div class="movie-card" ngFor="let movie of watchlist">
+    <div class="movies-grid" *ngIf="watchlist.length > 0; else noWatchlist">
+      <div class="movie-card" *ngFor="let movie of watchlist">
         <div class="movie-poster"></div>
         <div class="movie-info">
           <h4>{{ movie.title }}</h4>
@@ -29,8 +29,8 @@
 
   <div class="section">
     <h3>⭐ Favorite Movies</h3>
-    <div class="movies-grid"ngIf="favorites && favorites.length > 0; else noFavorites">
-      <div class="movie-card" ngFor="let movie of favorites">
+    <div class="movies-grid" *ngIf="favorites && favorites.length > 0; else noFavorites">
+      <div class="movie-card" *ngFor="let movie of favorites">
         <div class="movie-poster"></div>
         <div class="movie-info">
           <h4>{{ movie.title }}</h4>
@@ -44,6 +44,6 @@
   </div>
 </div>
 
-<divngIf="!user" class="not-logged-in">
+<div *ngIf="!user" class="not-logged-in">
   <h2>Please log in to view your profile</h2>
 </div>
