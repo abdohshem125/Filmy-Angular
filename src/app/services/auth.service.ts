@@ -8,16 +8,14 @@ import { tap } from 'rxjs/operators';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private apiUrl = 'https://filmy-dusky.vercel.app/api/auth'; // ✅ backend base
+  private apiUrl = 'https://filmy-dusky.vercel.app/api/auth';
 
-  // ✅ match backend route name -> /signup
   signup(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signup`, data);
+    return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  // ✅ match backend route name -> /signin
   login(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signin`, data).pipe(
+    return this.http.post(`${this.apiUrl}/login`, data).pipe(
       tap((res: any) => {
         if (res.tkn) {
           localStorage.setItem('token', res.tkn);
