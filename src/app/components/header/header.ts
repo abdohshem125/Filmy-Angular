@@ -17,8 +17,18 @@ export class Header {
     isDark = true;
 
 
-  constructor(private router: Router) {
+  constructor(private router: Router) {}
 
+  
+  get isLoggedIn(): boolean {
+    return !!localStorage.getItem('user');
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
   }
 
   goToGenre(genre: string) {

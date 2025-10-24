@@ -62,7 +62,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
+  padding: 7px;
   text-decoration: none;
   color: #cccccc;
   border-radius: 10px;
@@ -86,7 +86,6 @@
   box-shadow: 0 4px 15px rgba(255, 76, 76, 0.2);
 }
 
-/* Dropdown */
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -138,7 +137,6 @@
   transform: translateX(5px);
 }
 
-/* Search */
 .search-container {
   margin-left: 9rem;
 }
@@ -163,6 +161,7 @@
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 25px;
+  margin-right: 7px;
   color: #fff;
   font-size: 0.9rem;
   transition: all 0.3s ease;
@@ -176,7 +175,6 @@
   transform: translateY(-2px);
 }
 
-/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -208,7 +206,6 @@
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* Mobile Overlay */
 .mobile-overlay {
   position: fixed;
   top: 0;
@@ -228,7 +225,46 @@
   visibility: visible;
 }
 
-/* Responsive */
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.auth-btn {
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.auth-btn.login {
+  background: linear-gradient(135deg, #ff4c4c, #ff6b6b);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 76, 76, 0.3);
+}
+
+.auth-btn.logout {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 76, 76, 0.4);
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+  background-color: #ff4c4c;
+  color: white;
+}
+
+.mobile-auth {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .search-container {
     margin-left: 1rem;
@@ -272,12 +308,40 @@
   .hamburger {
     display: flex;
   }
+
+  .auth-buttons {
+    display: none;
+  }
+
+  .mobile-auth {
+    display: block;
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .mobile-auth .auth-btn {
+    width: 100%;
+    display: block;
+    padding: 0.8rem;
+    border-radius: 8px;
+  }
 }
 
 @media (max-width: 480px) {
+  .search-container {
+    width: 7rem;
+  }
+
+  .auth-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
   .logo-text {
     font-size: 1.3rem;
   }
+
   .nav-container {
     height: 65px;
   }
