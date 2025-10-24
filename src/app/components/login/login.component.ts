@@ -20,25 +20,21 @@ export class LoginComponent {
     password: ['', Validators.required],
   });
 
-  onSubmit() {
-    if (this.form.valid) {
-      this.authService.login(this.form.value).subscribe({
-        next: (res: any) => {
-          // ✅ unified naming
-          const token = res.token || res.tkn;
-          if (token) {
-            localStorage.setItem('token', token);
-            localStorage.setItem('userId', res.user?._id || '');
-            localStorage.setItem('user', JSON.stringify(res.user));
-          }
+onSubmit() {
+  if (this.form.valid) {
+    this.authService.login(this.form.value).subscribe({
+      next: (res: any) => {
+        // ✅ Save token & userId
+        localStorage.setItem('token', res.tkn);
+        localStorage.setItem('userId', res.user._id);
 
-          this.router.navigate(['/home']);
-        },
-        error: (err) => {
-          console.error('Login error:', err);
-          alert(err?.error?.message || 'Login failed. Please try again.');
-        },
-      });
-    }
+        // Optional: Save full user data
+        localStorage.setItem('user', JSON.stringify(res.user));
+
+        this.router.navigate(['/home']);
+      },
+      error: (err) => alert(err.error.message || 'Login failed'),
+    });
   }
+}
 }

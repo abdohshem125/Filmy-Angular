@@ -29,16 +29,12 @@ export class SignupComponent {
         alert('Passwords do not match');
         return;
       }
-
       this.authService.signup(data).subscribe({
-        next: (res) => {
+        next: () => {
           alert('Registration successful');
           this.router.navigate(['/login']);
         },
-        error: (err) => {
-          console.error('Signup error:', err);
-          alert(err?.error?.message || 'Signup failed. Please try again.');
-        },
+        error: (err) => alert(err.error.message || 'Signup failed'),
       });
     }
   }
