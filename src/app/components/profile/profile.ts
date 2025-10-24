@@ -5,7 +5,7 @@ interface Movie {
   title: string;
   year: number;
   poster?: string;
-  type?: string; 
+  type?: string;
 }
 
 interface User {
@@ -27,27 +27,14 @@ export class Profile implements OnInit {
   watchlist: Movie[] = [];
 
   ngOnInit(): void {
-
     const userData = localStorage.getItem('user');
-    if (userData) {
-      this.user = JSON.parse(userData);
-    } else {
-      this.user = {
-        name: 'Guest User',
-        email: 'guest@example.com',
-        avatar: 'https://i.pravatar.cc/150?img=12'
-      };
-    }
+    this.user = userData ? JSON.parse(userData) : null;
 
     const favData = localStorage.getItem('favorites');
-    if (favData) {
-      this.favorites = JSON.parse(favData);
-    }
+    this.favorites = favData ? JSON.parse(favData) : [];
 
     const watchlistData = localStorage.getItem('watchlist');
-    if (watchlistData) {
-      this.watchlist = JSON.parse(watchlistData);
-    }
+    this.watchlist = watchlistData ? JSON.parse(watchlistData) : [];
   }
 
   removeFavorite(index: number): void {
