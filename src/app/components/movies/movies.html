@@ -5,7 +5,7 @@
       <img [src]="movie.image" alt="{{ movie.title }}" />
       <div class="image-overlay"></div>
 
-      <button class="fav-btn" [class.active]="movie.isFav" (click)="toggleFavorite(movie, $event)">
+     <button class="fav-btn" [class.active]="movie.isFav" (click)="toggleFavorite(movie, $event)">
         <i [innerHTML]="movie.isFav ? '❤️' : '🤍'"></i>
       </button>
 
