@@ -1,1 +1,11 @@
-<p>contact-us works!</p>
+<section class="contact-container">
+  <h2>Contact Us</h2>
+  <p>We’d love to hear from you! Send us a message below.</p>
+
+  <form (ngSubmit)="onSubmit()" #contactForm="ngForm" class="contact-form">
+    <input type="text" name="name" [(ngModel)]="name" placeholder="Your Name" required>
+    <input type="email" name="email" [(ngModel)]="email" placeholder="Your Email" required>
+    <textarea name="message" [(ngModel)]="message" placeholder="Your Message" rows="4" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
