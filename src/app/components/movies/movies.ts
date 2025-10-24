@@ -92,8 +92,8 @@ toggleFavorite(movie: any, event: MouseEvent) {
 
   this.moviesService.addToFavorite(userId, movie._id).subscribe({
     next: () => {
-      const favorites = this.userService.getFavoritesFromStorage();
-      const exists = favorites.find(f => f._id === movie._id);
+      const exists = favorites.find((f: any) => f._id === movie._id);
+      const updated = favorites.filter((f: any) => f._id !== movie._id);
 
       if (exists) {
         // Remove from favorites
