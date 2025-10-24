@@ -3,7 +3,7 @@ import { HomeComponent } from './components/home/home.component';
 import { Movies } from './components/movies/movies';
 import { MovieDetails } from './components/movie-details/movie-details';
 import { Profile } from './components/profile/profile';
-import { ContactUs } from './components/contact-us/contact-us';
+// import { ContactUs } from './components/contact-us/contact-us';
 import { ContactUsComponent } from './components/contact-us/contact-us';
 // import { AboutUs } from './components/about-us/about-us';
 import { AboutUsComponent } from './components/about-us/about-us';
