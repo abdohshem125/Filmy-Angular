@@ -25,7 +25,7 @@ onSubmit() {
     this.authService.login(this.form.value).subscribe({
       next: (res: any) => {
         // ✅ Save token & userId
-        localStorage.setItem('token', res.token);
+        localStorage.setItem('token', res.tkn);
         localStorage.setItem('userId', res.user._id);
 
         // Optional: Save full user data
