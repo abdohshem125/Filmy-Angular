@@ -16,7 +16,7 @@ export class ContactUsComponent {
 
   onSubmit() {
     if (this.name && this.email && this.message) {
-      alert(Thank you, ${this.name}! Your message has been sent.);
+      alert(`Thank you, ${this.name}! Your message has been sent`);
       this.name = '';
       this.email = '';
       this.message = '';
