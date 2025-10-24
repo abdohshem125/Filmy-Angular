@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MoviesService } from '../../services/movies.service';
-import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
+
+interface Movie {
+  _id: string;
+  title: string;
+  genre?: string | string[];
+  isFav?: boolean;
+  // add other fields as needed
+}
 
 @Component({
   selector: 'app-movies',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './movies.html',
-  styleUrl: './movies.css',
+  styleUrls: ['./movies.css'], // fixed plural
 })
 export class Movies implements OnInit {
-  movies: any[] = [];
-  allMovies: any[] = [];
+  movies: Movie[] = [];
+  allMovies: Movie[] = [];
   genre: string | null = null;
-
   searchTerm: string | null = null;
 
   constructor(
@@ -24,7 +30,6 @@ export class Movies implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService
-
   ) {}
 
   ngOnInit(): void {
@@ -32,7 +37,7 @@ export class Movies implements OnInit {
       const g = params.get('genre');
       if (g) {
         this.genre = g;
-        this.searchTerm = null; // reset search
+        this.searchTerm = null;
         this.loadMovies();
       }
     });
@@ -41,7 +46,7 @@ export class Movies implements OnInit {
       const s = q.get('search');
       if (s !== null) {
         this.searchTerm = s;
-        this.genre = null; // reset genre
+        this.genre = null;
         this.loadMovies();
       }
     });
@@ -56,8 +61,8 @@ export class Movies implements OnInit {
       next: (res: any) => {
         this.allMovies = res.movies ?? (Array.isArray(res) ? res : []);
 
-        // ✅ Filter by genre first (if exists)
         let filtered = this.allMovies;
+
         if (this.genre) {
           const gLower = this.genre.toLowerCase();
           filtered = filtered.filter((m) => {
@@ -69,7 +74,6 @@ export class Movies implements OnInit {
           });
         }
 
-        // ✅ Then filter by search term (if exists)
         if (this.searchTerm) {
           const sLower = this.searchTerm.toLowerCase();
           filtered = filtered.filter((m) => m.title?.toLowerCase().includes(sLower));
@@ -81,61 +85,42 @@ export class Movies implements OnInit {
     });
   }
 
-toggleFavorite(movie: any, event: MouseEvent) {
-  event.stopPropagation();
+  toggleFavorite(movie: Movie, event: MouseEvent) {
+    event.stopPropagation();
 
-  const user = localStorage.getItem('user');
-  const token = localStorage.getItem('token');
-  if (!user || !token) { alert('Login required'); return; }
-
-  const userId = JSON.parse(user)._id;
-
-this.moviesService.addToFavorite(userId, movie._id).subscribe({
-  next: () => {
-    // Get current favorites from localStorage
-    const favData = localStorage.getItem('favorites');
-    let favorites: Movie[] = favData ? JSON.parse(favData) : [];
-
-    const exists = favorites.find((f: Movie) => f._id === movie._id);
-
-    if (exists) {
-      // Remove from favorites
-      favorites = favorites.filter(f => f._id !== movie._id);
-      this.userService.updateFavorites(favorites); // update Profile
-      movie.isFav = false;
-    } else {
-      // Add to favorites
-      favorites.push(movie);
-      this.userService.updateFavorites(favorites); // update Profile
-      movie.isFav = true;
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    if (!user || !token) {
+      alert('Login required');
+      return;
     }
 
-    // Save updated favorites in localStorage
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  },
-  error: (err) => {
-    console.error(err);
-    alert('Failed to add favorite');
+    const userId = JSON.parse(user)._id;
+
+    this.moviesService.addToFavorite(userId, movie._id).subscribe({
+      next: () => {
+        const favData = localStorage.getItem('favorites');
+        let favorites: Movie[] = favData ? JSON.parse(favData) : [];
+
+        const exists = favorites.find((f: Movie) => f._id === movie._id);
+
+        if (exists) {
+          favorites = favorites.filter(f => f._id !== movie._id);
+          movie.isFav = false;
+        } else {
+          favorites.push(movie);
+          movie.isFav = true;
+        }
+
+        this.userService.updateFavorites(favorites); // update Profile
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Failed to update favorite');
+      }
+    });
   }
-});
-
-
-
-// addToWatchlist(movieId: string) {
-//   const userId = localStorage.getItem('userId');
-//   const token = localStorage.getItem('token');
-
-//   if (!userId || !token) {
-//     alert("Please login first!");
-//     return;
-//   }
-
-//   this.moviesService.addToWatchlist(userId, movieId).subscribe({
-//     next: (res) => alert("✅ Added to watchlist!"),
-//     error: (err) => alert("❌ Failed to add to watchlist"),
-//   });
-// }
-
 
   goToMovie(id: string) {
     this.router.navigate(['/movieDetails', id]);
