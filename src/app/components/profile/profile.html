@@ -1,1 +1,49 @@
-<p>profile works!</p>
+<div class="profile-page" ngIf="user">
+  <div class="profile-header">
+    <div class="user-info">
+      <div class="avatar">
+        {{ user.name.charAt(0).toUpperCase() }}
+      </div>
+      <div class="details">
+        <h2>{{ user.name }}</h2>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>🎥 Watchlist</h3>
+    <div class="movies-grid"ngIf="watchlist.length > 0; else noWatchlist">
+      <div class="movie-card" ngFor="let movie of watchlist">
+        <div class="movie-poster"></div>
+        <div class="movie-info">
+          <h4>{{ movie.title }}</h4>
+          <p>{{ movie.year }}</p>
+        </div>
+      </div>
+    </div>
+    <ng-template #noWatchlist>
+      <p class="empty">No movies in your watchlist yet.</p>
+    </ng-template>
+  </div>
+
+  <div class="section">
+    <h3>⭐ Favorite Movies</h3>
+    <div class="movies-grid"ngIf="favorites && favorites.length > 0; else noFavorites">
+      <div class="movie-card" ngFor="let movie of favorites">
+        <div class="movie-poster"></div>
+        <div class="movie-info">
+          <h4>{{ movie.title }}</h4>
+          <p>{{ movie.year }}</p>
+        </div>
+      </div>
+    </div>
+    <ng-template #noFavorites>
+      <p class="empty">No favorite movies yet.</p>
+    </ng-template>
+  </div>
+</div>
+
+<divngIf="!user" class="not-logged-in">
+  <h2>Please log in to view your profile</h2>
+</div>
