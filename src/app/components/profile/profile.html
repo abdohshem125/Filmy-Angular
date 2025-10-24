@@ -1,9 +1,7 @@
 <div *ngIf="user" class="profile-page">
   <div class="profile-header">
     <div class="user-info">
-      <div class="avatar">
-        {{ user.name.charAt(0).toUpperCase() }}
-      </div>
+      <div class="avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
       <div class="details">
         <h2>{{ user.name }}</h2>
         <p>{{ user.email }}</p>
@@ -29,13 +27,9 @@
 
   <div class="section">
     <h3>⭐ Favorite Movies</h3>
-    <div class="movies-grid" *ngIf="favorites && favorites.length > 0; else noFavorites">
-      <div class="movie-card" *ngFor="let movie of favorites">
-        <div class="movie-poster"></div>
-        <div class="movie-info">
-          <h4>{{ movie.title }}</h4>
-          <p>{{ movie.year }}</p>
-        </div>
+    <div *ngIf="favorites.length > 0; else noFavorites" class="favorite-movies">
+      <div class="movie-card" *ngFor="let movie of favorites" (click)="goToMovie(movie._id)">
+        <h3>{{ movie.title }}</h3>
       </div>
     </div>
     <ng-template #noFavorites>

@@ -4,7 +4,7 @@ import { UserService } from '../../services/user.service';
 
 interface Movie {
   title: string;
-  year: number;
+  year?: number;
   poster?: string;
 }
 
