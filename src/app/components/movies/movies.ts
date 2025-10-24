@@ -90,26 +90,35 @@ toggleFavorite(movie: any, event: MouseEvent) {
 
   const userId = JSON.parse(user)._id;
 
-  this.moviesService.addToFavorite(userId, movie._id).subscribe({
-    next: () => {
-      const exists = favorites.find((f: any) => f._id === movie._id);
-      const updated = favorites.filter((f: any) => f._id !== movie._id);
+this.moviesService.addToFavorite(userId, movie._id).subscribe({
+  next: () => {
+    // Get current favorites from localStorage
+    const favData = localStorage.getItem('favorites');
+    let favorites: Movie[] = favData ? JSON.parse(favData) : [];
 
-      if (exists) {
-        // Remove from favorites
-        const updated = favorites.filter(f => f._id !== movie._id);
-        this.userService.updateFavorites(updated);
-        movie.isFav = false;
-      } else {
-        // Add to favorites
-        favorites.push(movie);
-        this.userService.updateFavorites(favorites);
-        movie.isFav = true;
-      }
-    },
-    error: err => { console.error(err); alert('Failed to add favorite'); }
-  });
-}
+    const exists = favorites.find((f: Movie) => f._id === movie._id);
+
+    if (exists) {
+      // Remove from favorites
+      favorites = favorites.filter(f => f._id !== movie._id);
+      this.userService.updateFavorites(favorites); // update Profile
+      movie.isFav = false;
+    } else {
+      // Add to favorites
+      favorites.push(movie);
+      this.userService.updateFavorites(favorites); // update Profile
+      movie.isFav = true;
+    }
+
+    // Save updated favorites in localStorage
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  },
+  error: (err) => {
+    console.error(err);
+    alert('Failed to add favorite');
+  }
+});
+
 
 
 // addToWatchlist(movieId: string) {
