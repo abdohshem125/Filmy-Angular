@@ -81,20 +81,47 @@ export class Movies implements OnInit {
     });
   }
 
-addToWatchlist(movieId: string) {
-  const userId = localStorage.getItem('userId');
-  const token = localStorage.getItem('token');
 
-  if (!userId || !token) {
-    alert("Please login first!");
-    return;
+    toggleFavorite(movie: any, event: MouseEvent): void {
+    event.stopPropagation();
+
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+
+    if (!user || !token) {
+      alert('❌ You must be logged in to add favorites');
+      return;
+    }
+
+    const userId = JSON.parse(user)._id;
+
+    this.moviesService.addToFavorite(userId, movie._id).subscribe({
+      next: (res: any) => {
+        movie.isFav = !movie.isFav;
+        alert('✅ Added to favorites');
+        console.log('Favorite added:', res);
+      },
+      error: (err) => {
+        console.error('Error adding to favorites:', err);
+        alert('❌ Failed to add to favorites');
+      },
+    });
   }
 
-  this.moviesService.addToWatchlist(userId, movieId).subscribe({
-    next: (res) => alert("✅ Added to watchlist!"),
-    error: (err) => alert("❌ Failed to add to watchlist"),
-  });
-}
+// addToWatchlist(movieId: string) {
+//   const userId = localStorage.getItem('userId');
+//   const token = localStorage.getItem('token');
+
+//   if (!userId || !token) {
+//     alert("Please login first!");
+//     return;
+//   }
+
+//   this.moviesService.addToWatchlist(userId, movieId).subscribe({
+//     next: (res) => alert("✅ Added to watchlist!"),
+//     error: (err) => alert("❌ Failed to add to watchlist"),
+//   });
+// }
 
 
   goToMovie(id: string) {
