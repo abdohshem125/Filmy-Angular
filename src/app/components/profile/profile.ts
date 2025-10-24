@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
 
 interface Movie {
   title: string;
   year: number;
   poster?: string;
-  type?: string;
 }
 
 interface User {
@@ -26,24 +26,23 @@ export class Profile implements OnInit {
   favorites: Movie[] = [];
   watchlist: Movie[] = [];
 
+  constructor(private userService: UserService) {}
+
   ngOnInit(): void {
     const userData = localStorage.getItem('user');
     this.user = userData ? JSON.parse(userData) : null;
 
-    const favData = localStorage.getItem('favorites');
-    this.favorites = favData ? JSON.parse(favData) : [];
-
-    const watchlistData = localStorage.getItem('watchlist');
-    this.watchlist = watchlistData ? JSON.parse(watchlistData) : [];
+    this.userService.favorites$.subscribe(f => this.favorites = f);
+    this.userService.watchlist$.subscribe(w => this.watchlist = w);
   }
 
-  removeFavorite(index: number): void {
+  removeFavorite(index: number) {
     this.favorites.splice(index, 1);
-    localStorage.setItem('favorites', JSON.stringify(this.favorites));
+    this.userService.updateFavorites(this.favorites);
   }
 
-  removeWatchlist(index: number): void {
+  removeWatchlist(index: number) {
     this.watchlist.splice(index, 1);
-    localStorage.setItem('watchlist', JSON.stringify(this.watchlist));
+    this.userService.updateWatchlist(this.watchlist);
   }
 }

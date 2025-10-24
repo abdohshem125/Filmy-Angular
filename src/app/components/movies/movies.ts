@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MoviesService } from '../../services/movies.service';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../services/user.service';
+
 
 @Component({
   selector: 'app-movies',
@@ -22,6 +24,8 @@ export class Movies implements OnInit {
     private moviesService: MoviesService,
     private router: Router,
     private route: ActivatedRoute
+    private userService: UserService
+
   ) {}
 
   ngOnInit(): void {
@@ -78,32 +82,36 @@ export class Movies implements OnInit {
     });
   }
 
+toggleFavorite(movie: any, event: MouseEvent) {
+  event.stopPropagation();
 
-    toggleFavorite(movie: any, event: MouseEvent): void {
-    event.stopPropagation();
+  const user = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
+  if (!user || !token) { alert('Login required'); return; }
 
-    const user = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
+  const userId = JSON.parse(user)._id;
 
-    if (!user || !token) {
-      alert('You must be logged in to add favorites');
-      return;
-    }
+  this.moviesService.addToFavorite(userId, movie._id).subscribe({
+    next: () => {
+      const favorites = this.userService.getFavoritesFromStorage();
+      const exists = favorites.find(f => f._id === movie._id);
 
-    const userId = JSON.parse(user)._id;
+      if (exists) {
+        // Remove from favorites
+        const updated = favorites.filter(f => f._id !== movie._id);
+        this.userService.updateFavorites(updated);
+        movie.isFav = false;
+      } else {
+        // Add to favorites
+        favorites.push(movie);
+        this.userService.updateFavorites(favorites);
+        movie.isFav = true;
+      }
+    },
+    error: err => { console.error(err); alert('Failed to add favorite'); }
+  });
+}
 
-    this.moviesService.addToFavorite(userId, movie._id).subscribe({
-      next: (res: any) => {
-        movie.isFav = !movie.isFav;
-        alert('Added to favorites');
-        console.log('Favorite added:', res);
-      },
-      error: (err) => {
-        console.error('Error adding to favorites:', err);
-        alert('Failed to add to favorites');
-      },
-    });
-  }
 
 // addToWatchlist(movieId: string) {
 //   const userId = localStorage.getItem('userId');
