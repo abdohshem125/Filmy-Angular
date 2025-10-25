@@ -91,9 +91,9 @@
       <button *ngIf="isLoggedIn" (click)="logout()" class="auth-btn logout">
         Logout
       </button>
-      <!-- <a *ngIf="!isLoggedIn" routerLink="/login" class="auth-btn login">
+      <a *ngIf="!isLoggedIn" routerLink="/login" class="auth-btn login">
         Login
-      </a> -->
+      </a>
     </div>
 
     <button class="hamburger" (click)="toggleMenu()" [class.active]="menuOpen">
