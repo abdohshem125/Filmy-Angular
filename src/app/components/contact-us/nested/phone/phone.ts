@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-mobile',
-  imports: [],
+  standalone: true,
   templateUrl: './phone.html',
-  styles: ``
+  styleUrls: ['./phone.css']
 })
-export class Mobile {
-
-}
+export class Phone {}

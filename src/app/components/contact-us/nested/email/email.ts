@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-email',
-  imports: [],
+  standalone: true,
   templateUrl: './email.html',
-  styles: ``
+  styleUrls: ['./email.css']
 })
-export class Email {
-
-}
+export class Email {}

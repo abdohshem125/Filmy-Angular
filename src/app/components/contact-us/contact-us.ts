@@ -6,5 +6,6 @@ import { RouterOutlet, RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet, RouterLink],
   templateUrl: './contact-us.html', 
+  styleUrls: ['./contact-us.css'],
 })
 export class ContactUsComponent {}

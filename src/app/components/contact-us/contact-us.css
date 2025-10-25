@@ -1,126 +1,87 @@
-/* Update only the body/content styles - keep your existing navigation etc. */
-
-/* Body background */
-body {
-  background: linear-gradient(135deg, #000000 0%, #1a0000 100%) !important;
-  color: #fff;
+:host {
+  display: block;
+  background-color: #000;
   min-height: 100vh;
+  color: #fff;
+  padding: 60px 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
 }
 
-/* Contact section container */
-.container.py-5 {
-  background: transparent;
+.contact-page {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-/* Header section */
-.text-center h1 {
-  color: #ff0000;
-  text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-  font-weight: 800;
-  letter-spacing: 1px;
+.contact-title {
+  font-size: 2.5rem;
+  color: #ff4444;
+  margin-bottom: 10px;
 }
 
-.text-center p.lead {
-  color: #ccc;
+.contact-subtitle {
+  color: #aaa;
+  margin-bottom: 40px;
   font-size: 1.1rem;
 }
 
-/* Red accent line */
-.red-accent {
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #ff0000, transparent);
-  width: 80%;
-  margin: 20px auto;
+.contact-cards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
 }
 
-/* Cards - enhanced black and red */
-.card {
-  background: linear-gradient(145deg, #1a1a1a, #0a0a0a) !important;
-  border: 2px solid #ff0000 !important;
-  border-radius: 20px !important;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #ff0000, #ff3333, #ff0000);
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3);
-  border-color: #ff3333 !important;
-}
-
-/* Card content */
-.card-body h5 {
-  color: #ff0000 !important;
-  font-weight: 700;
-  font-size: 1.3rem;
-}
-
-.card-body p {
-  color: #aaa !important;
-  line-height: 1.6;
-}
-
-.card-body img {
-  border: 3px solid #ff0000 !important;
-  background: #2a0000;
-  padding: 8px;
-  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
-}
-
-/* Buttons - enhanced */
-.btn-outline-primary, .btn-outline-success {
-  color: #ff0000 !important;
-  border: 2px solid #ff0000 !important;
-  border-radius: 25px !important;
-  padding: 10px 30px !important;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  background: transparent;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.btn-outline-primary:hover, .btn-outline-success:hover {
-  background: #ff0000 !important;
-  color: #000 !important;
-  border-color: #ff0000 !important;
-  box-shadow: 0 5px 20px rgba(255, 0, 0, 0.5);
-  transform: translateY(-2px);
-}
-
-/* Router outlet area */
-.mt-5 {
-  background: rgba(26, 26, 26, 0.8);
-  border-radius: 15px;
+.contact-card {
+  background-color: #111;
+  border-radius: 20px;
   padding: 30px;
-  border: 1px solid #333;
+  width: 300px;
+  box-shadow: 0 8px 20px rgba(255, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(255, 0, 0, 0.3);
+}
 
-/* Responsive adjustments for contact section only */
-@media (max-width: 768px) {
-  .container.py-5 {
-    padding: 30px 15px !important;
-  }
-  
-  .card-body img {
-    width: 100px !important;
-    height: 100px !important;
-  }
-  
-  .btn-outline-primary, .btn-outline-success {
-    padding: 8px 20px !important;
-    font-size: 0.9rem;
-  }
+.contact-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.contact-card:hover .contact-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px #ff4444);
+}
+
+.contact-card h2 {
+  color: #fff;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.contact-card p {
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.contact-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 2px solid #ff4444;
+  color: #ff4444;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  background-color: #ff4444;
+  color: #fff;
 }
