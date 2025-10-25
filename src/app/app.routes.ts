@@ -7,7 +7,7 @@ import { Profile } from './components/profile/profile';
 // import { ContactUsComponent } from './components/contact-us/contact-us';
 import { ContactUsComponent } from './components/contact-us/contact-us';
 import { Email } from './components/contact-us/nested/email/email';
-import { Mobile } from './components/contact-us/nested/phone/phone';
+import { Phone } from './components/contact-us/nested/phone/phone';
 // import { AboutUs } from './components/about-us/about-us';
 import { AboutUsComponent } from './components/about-us/about-us';
 import { LoginComponent } from './components/login/login.component';
@@ -28,7 +28,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'mobile', pathMatch: 'full' }, // default child
       { path: 'email', component: Email },
-      { path: 'mobile', component: Mobile },
+      { path: 'phone', component: Phone },
     ]
   },
   { path: 'aboutUs', component: AboutUsComponent },
