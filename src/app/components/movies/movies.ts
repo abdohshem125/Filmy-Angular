@@ -13,6 +13,7 @@ export interface Movie {
   rating?: number;
   releaseYear?: number;
   duration?: number;
+  isWatchlist?: boolean;
 }
 
 @Component({
@@ -28,7 +29,6 @@ export class Movies implements OnInit {
   genre: string | null = null;
   searchTerm: string | null = null;
 
-  // Toast notification
   toastMessage: string = '';
   toastVisible: boolean = false;
 
@@ -69,7 +69,7 @@ export class Movies implements OnInit {
         const apiMovies = res.movies ?? (Array.isArray(res) ? res : []);
 
         // Get user-specific favorites
-        const favorites = this.userService.getFavoritesFromStorage();
+        const favorites: Movie[] = this.userService.getFavoritesFromStorage();
 
         this.allMovies = apiMovies.map((m: any) => {
           const movie: Movie = {
@@ -80,7 +80,7 @@ export class Movies implements OnInit {
             rating: m.rating ?? m.vote_average,
             releaseYear: m.releaseYear ?? (m.release_date ? new Date(m.release_date).getFullYear() : undefined),
             duration: m.duration ?? m.runtime,
-            isFav: favorites.some(f => f._id === (m._id || m.id)),
+            isFav: favorites.some((f: Movie) => f._id === (m._id || m.id)),
           };
           return movie;
         });
@@ -118,11 +118,11 @@ export class Movies implements OnInit {
       return;
     }
 
-    let favorites = this.userService.getFavoritesFromStorage();
-    const exists = favorites.find(f => f._id === movie._id);
+    let favorites: Movie[] = this.userService.getFavoritesFromStorage();
+    const exists = favorites.find((f: Movie) => f._id === movie._id);
 
     if (exists) {
-      favorites = favorites.filter(f => f._id !== movie._id);
+      favorites = favorites.filter((f: Movie) => f._id !== movie._id);
       movie.isFav = false;
       this.showToast(`Removed "${movie.title}" from favorites`);
     } else {
@@ -141,6 +141,6 @@ export class Movies implements OnInit {
   showToast(message: string, duration: number = 2000) {
     this.toastMessage = message;
     this.toastVisible = true;
-    setTimeout(() => this.toastVisible = false, duration);
+    setTimeout(() => (this.toastVisible = false), duration);
   }
 }
