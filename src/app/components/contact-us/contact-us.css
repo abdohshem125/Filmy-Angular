@@ -1,24 +1,18 @@
-/* Add these styles to your component's CSS file */
+/* Update only the body/content styles - keep your existing navigation etc. */
 
-/* General page style */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #000;
-  font-family: Arial, sans-serif;
+/* Body background */
+body {
+  background: linear-gradient(135deg, #000000 0%, #1a0000 100%) !important;
   color: #fff;
-  background: linear-gradient(135deg, #000000 0%, #1a0000 100%);
+  min-height: 100vh;
 }
 
-/* Section container */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 50px 20px;
+/* Contact section container */
+.container.py-5 {
+  background: transparent;
 }
 
-/* Header */
+/* Header section */
 .text-center h1 {
   color: #ff0000;
   text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
@@ -26,19 +20,27 @@ html, body {
   letter-spacing: 1px;
 }
 
-.text-center p {
+.text-center p.lead {
   color: #ccc;
   font-size: 1.1rem;
 }
 
-/* Card style */
+/* Red accent line */
+.red-accent {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff0000, transparent);
+  width: 80%;
+  margin: 20px auto;
+}
+
+/* Cards - enhanced black and red */
 .card {
-  background-color: #1a1a1a;
-  border: 1px solid #ff0000;
-  border-radius: 20px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  overflow: hidden;
+  background: linear-gradient(145deg, #1a1a1a, #0a0a0a) !important;
+  border: 2px solid #ff0000 !important;
+  border-radius: 20px !important;
+  transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
 }
 
 .card::before {
@@ -52,31 +54,73 @@ html, body {
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(255, 0, 0, 0.5);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3);
+  border-color: #ff3333 !important;
 }
 
-/* Card body */
+/* Card content */
 .card-body h5 {
-  color: #ff0000;
+  color: #ff0000 !important;
   font-weight: 700;
+  font-size: 1.3rem;
 }
 
 .card-body p {
-  color: #aaa;
+  color: #aaa !important;
+  line-height: 1.6;
 }
 
 .card-body img {
-  border: 2px solid #ff0000;
-  background-color: #2a0000;
-  padding: 5px;
+  border: 3px solid #ff0000 !important;
+  background: #2a0000;
+  padding: 8px;
+  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
 }
 
-/* Buttons */
+/* Buttons - enhanced */
 .btn-outline-primary, .btn-outline-success {
-  color: #ff0000;
-  border-color: #ff0000;
-  transition: 0.3s;
+  color: #ff0000 !important;
+  border: 2px solid #ff0000 !important;
+  border-radius: 25px !important;
+  padding: 10px 30px !important;
   font-weight: 600;
-  border-radius: 30px;
-  padding
+  transition: all 0.3s ease;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-outline-primary:hover, .btn-outline-success:hover {
+  background: #ff0000 !important;
+  color: #000 !important;
+  border-color: #ff0000 !important;
+  box-shadow: 0 5px 20px rgba(255, 0, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Router outlet area */
+.mt-5 {
+  background: rgba(26, 26, 26, 0.8);
+  border-radius: 15px;
+  padding: 30px;
+  border: 1px solid #333;
+}
+
+
+/* Responsive adjustments for contact section only */
+@media (max-width: 768px) {
+  .container.py-5 {
+    padding: 30px 15px !important;
+  }
+  
+  .card-body img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+  
+  .btn-outline-primary, .btn-outline-success {
+    padding: 8px 20px !important;
+    font-size: 0.9rem;
+  }
+}
