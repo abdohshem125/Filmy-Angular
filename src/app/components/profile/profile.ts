@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 
 interface Movie {
-  title: string;
   _id: string;
+  title: string;
   image?: string;
 }
 
 interface User {
+  _id: string;
   name: string;
   email: string;
-  _id: string;
 }
 
 @Component({

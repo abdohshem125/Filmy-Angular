@@ -9,6 +9,10 @@ export class UserService {
   private watchlistSubject = new BehaviorSubject<any[]>([]);
   watchlist$ = this.watchlistSubject.asObservable();
 
+  constructor() {
+    this.loadUserData();
+  }
+
   private getUserId(): string | null {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user)._id : null;
@@ -17,6 +21,28 @@ export class UserService {
   private getStorageKey(type: 'favorites' | 'watchlist') {
     const userId = this.getUserId();
     return userId ? `${type}_${userId}` : type;
+  }
+
+  private loadUserData() {
+    const favoritesKey = this.getStorageKey('favorites');
+    const watchlistKey = this.getStorageKey('watchlist');
+
+    const fav = favoritesKey ? localStorage.getItem(favoritesKey) : null;
+    const watch = watchlistKey ? localStorage.getItem(watchlistKey) : null;
+
+    this.favoritesSubject.next(fav ? JSON.parse(fav) : []);
+    this.watchlistSubject.next(watch ? JSON.parse(watch) : []);
+  }
+
+  // Call this on login
+  reloadUserData() {
+    this.loadUserData();
+  }
+
+  // Call this on logout
+  logout() {
+    this.favoritesSubject.next([]);
+    this.watchlistSubject.next([]);
   }
 
   getFavoritesFromStorage() {
