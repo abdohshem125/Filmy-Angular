@@ -9,8 +9,6 @@ export interface Movie {
   title: string;
   genre?: string | string[];
   isFav?: boolean;
-
-  // Template properties
   image?: string;
   rating?: number;
   releaseYear?: number;
@@ -70,11 +68,9 @@ export class Movies implements OnInit {
       next: (res: any) => {
         const apiMovies = res.movies ?? (Array.isArray(res) ? res : []);
 
-        // Get favorites from localStorage
-        const favData = localStorage.getItem('favorites');
-        const favorites: Movie[] = favData ? JSON.parse(favData) : [];
+        // Get user-specific favorites
+        const favorites = this.userService.getFavoritesFromStorage();
 
-        // Map API fields to Movie interface and mark as favorite if in localStorage
         this.allMovies = apiMovies.map((m: any) => {
           const movie: Movie = {
             _id: m._id || m.id,
@@ -84,14 +80,8 @@ export class Movies implements OnInit {
             rating: m.rating ?? m.vote_average,
             releaseYear: m.releaseYear ?? (m.release_date ? new Date(m.release_date).getFullYear() : undefined),
             duration: m.duration ?? m.runtime,
-            isFav: false,
+            isFav: favorites.some(f => f._id === (m._id || m.id)),
           };
-
-          // Persist favorite
-          if (favorites.find(f => f._id === movie._id)) {
-            movie.isFav = true;
-          }
-
           return movie;
         });
 
@@ -123,41 +113,25 @@ export class Movies implements OnInit {
     event.stopPropagation();
 
     const user = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
-    if (!user || !token) {
+    if (!user) {
       this.showToast('Login required');
       return;
     }
 
-    const userId = JSON.parse(user)._id;
+    let favorites = this.userService.getFavoritesFromStorage();
+    const exists = favorites.find(f => f._id === movie._id);
 
-    this.moviesService.addToFavorite(userId, movie._id).subscribe({
-      next: () => {
-        const favData = localStorage.getItem('favorites');
-        let favorites: Movie[] = favData ? JSON.parse(favData) : [];
+    if (exists) {
+      favorites = favorites.filter(f => f._id !== movie._id);
+      movie.isFav = false;
+      this.showToast(`Removed "${movie.title}" from favorites`);
+    } else {
+      favorites.push(movie);
+      movie.isFav = true;
+      this.showToast(`Added "${movie.title}" to favorites`);
+    }
 
-        const exists = favorites.find((f: Movie) => f._id === movie._id);
-
-        if (exists) {
-          // Remove from favorites
-          favorites = favorites.filter(f => f._id !== movie._id);
-          movie.isFav = false;
-          this.showToast(`Removed "${movie.title}" from favorites`);
-        } else {
-          // Add to favorites
-          favorites.push(movie);
-          movie.isFav = true;
-          this.showToast(`Added "${movie.title}" to favorites`);
-        }
-
-        this.userService.updateFavorites(favorites); // update Profile
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-      },
-      error: (err) => {
-        console.error(err);
-        this.showToast('Failed to update favorite');
-      }
-    });
+    this.userService.updateFavorites(favorites);
   }
 
   goToMovie(id: string) {
@@ -167,8 +141,6 @@ export class Movies implements OnInit {
   showToast(message: string, duration: number = 2000) {
     this.toastMessage = message;
     this.toastVisible = true;
-    setTimeout(() => {
-      this.toastVisible = false;
-    }, duration);
+    setTimeout(() => this.toastVisible = false, duration);
   }
 }

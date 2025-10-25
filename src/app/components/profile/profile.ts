@@ -4,14 +4,14 @@ import { UserService } from '../../services/user.service';
 
 interface Movie {
   title: string;
-  year?: number;
-  poster?: string;
+  _id: string;
+  image?: string;
 }
 
 interface User {
   name: string;
   email: string;
-  avatar?: string;
+  _id: string;
 }
 
 @Component({
@@ -31,6 +31,11 @@ export class Profile implements OnInit {
   ngOnInit(): void {
     const userData = localStorage.getItem('user');
     this.user = userData ? JSON.parse(userData) : null;
+
+    if (this.user) {
+      this.favorites = this.userService.getFavoritesFromStorage();
+      this.watchlist = this.userService.getWatchlistFromStorage();
+    }
 
     this.userService.favorites$.subscribe(f => this.favorites = f);
     this.userService.watchlist$.subscribe(w => this.watchlist = w);
